@@ -13,7 +13,7 @@ import MaterialCatalog from './components/MaterialCatalog.vue'
       <div class="student-info" aria-label="Дані студента та середовище">
         <p class="student-info__item">
           <span class="student-info__label">Студент</span>
-          <strong class="student-info__value">Бікулов Тимур · група ХХ-00</strong>
+          <strong class="student-info__value">Бікулов Тимур · група 7.F2.25-2</strong>
         </p>
         <p class="student-info__item">
           <span class="student-info__label">Середовище</span>
