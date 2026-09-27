@@ -1,0 +1,297 @@
+:root {
+  color-scheme: dark;
+
+  --color-page: #0a0e14;
+  --color-surface: #151b24;
+  --color-ink: #e6edf3;
+  --color-muted: #8b9397;
+  --color-line: #30363d;
+  --color-accent: #58a14f;
+  --color-accent-hover: #6fd16f;
+  --color-danger: #f85149;
+  --color-vue: #42b883;
+  --color-vue-surface: #1c2a24;
+  --color-html: #e44d26;
+  --color-html-surface: #2a1507;
+  --color-css: #5ac8fa;
+  --color-css-surface: #0c1424;
+  --color-javascript: #d29922;
+  --color-javascript-surface: #261906;
+  --shadow-soft: 0 18px 50px rgb(0 0 0 / 25%);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-heading: Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  background: var(--color-page);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+/* ---------- Page shell ---------- */
+
+.page {
+  min-width: 320px;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.app {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* ---------- Header ---------- */
+
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding-block: 24px;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.app__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 22px 30px;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 760;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.brand__mark {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-page);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.brand__text {
+  white-space: nowrap;
+}
+
+.student-info {
+  display: flex;
+  gap: 12px;
+}
+
+.student-info__item {
+  min-width: 190px;
+  margin: 0;
+  padding: 9px 13px;
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  background: var(--color-surface);
+}
+
+.student-info__label,
+.student-info__value {
+  display: block;
+}
+
+.student-info__label {
+  margin-bottom: 3px;
+  color: var(--color-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.student-info__value {
+  overflow: hidden;
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  min-width: 0;
+  align-items: end;
+  justify-content: space-between;
+  gap: 48px;
+  padding-block: clamp(40px, 8vw, 80px) clamp(28px, 6vw, 56px);
+}
+
+.hero__content {
+  max-width: 700px;
+}
+
+.hero__eyebrow {
+  margin: 0 0 14px;
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  max-width: 800px;
+  overflow-wrap: anywhere;
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  font: inherit;
+  font-weight: 720;
+  cursor: pointer;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: background-color 150ms ease, transform 150ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  &--primary {
+    min-height: 40px;
+    padding: 0 20px;
+    background: var(--color-accent);
+    color: var(--color-page);
+  }
+
+  &--secondary {
+    min-height: 40px;
+    padding: 0 20px;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: var(--color-ink);
+  }
+
+  &--sm {
+    @apply px-3 py-1.5 text-sm font-medium;
+  }
+}
+
+/* ---------- Demo section ---------- */
+
+.demo-section {
+  margin-top: 28px;
+}
+
+.demo-section__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.demo-section__badge {
+  @apply px-2.5 py-0.5 text-xs font-semibold rounded-full;
+  background: var(--color-accent);
+  color: var(--color-page);
+}
+
+.demo-section__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* ---------- Focus ring for form controls ---------- */
+
+.field__input:focus-visible,
+.field__select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Motion preference ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
