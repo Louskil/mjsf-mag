@@ -60,15 +60,21 @@ const activeBoxedTab = ref('overview')
           <h2 class="demo-section__title">Панелі через слоти Tab</h2>
         </div>
         <Tabs v-model="activeUnderlineTab" variant="underline">
-          <Tab slug="overview" title="Огляд">
-            <OverviewPanel />
-          </Tab>
-          <Tab slug="requirements" title="Вимоги">
-            <RequirementsPanel />
-          </Tab>
-          <Tab slug="environment" title="Середовище">
-            <EnvironmentPanel />
-          </Tab>
+          <KeepAlive>
+            <Tab slug="overview" title="Огляд">
+              <OverviewPanel />
+            </Tab>
+          </KeepAlive>
+          <KeepAlive>
+            <Tab slug="requirements" title="Вимоги">
+              <RequirementsPanel />
+            </Tab>
+          </KeepAlive>
+          <KeepAlive>
+            <Tab slug="environment" title="Середовище">
+              <EnvironmentPanel />
+            </Tab>
+          </KeepAlive>
         </Tabs>
       </section>
 
@@ -80,14 +86,16 @@ const activeBoxedTab = ref('overview')
           </h2>
         </div>
         <Tabs v-model="activePillsTab" variant="pills">
-          <Tab
-            v-for="config in pillsTabsConfig"
-            :key="config.slug"
-            :slug="config.slug"
-            :title="config.title"
-            :panel="config.panel"
-            :panel-props="config.panelProps"
-          />
+          <template v-for="config in pillsTabsConfig" :key="config.slug">
+            <KeepAlive>
+              <Tab
+                :slug="config.slug"
+                :title="config.title"
+                :panel="config.panel"
+                :panel-props="config.panelProps"
+              />
+            </KeepAlive>
+          </template>
         </Tabs>
       </section>
 
@@ -99,15 +107,21 @@ const activeBoxedTab = ref('overview')
           </h2>
         </div>
         <Tabs v-model="activeBoxedTab" variant="boxed">
-          <Tab slug="overview" title="Огляд">
-            <OverviewPanel />
-          </Tab>
-          <Tab slug="requirements" title="Вимоги" disabled>
-            <RequirementsPanel />
-          </Tab>
-          <Tab slug="environment" title="Середовище">
-            <EnvironmentPanel />
-          </Tab>
+          <KeepAlive>
+            <Tab slug="overview" title="Огляд">
+              <OverviewPanel />
+            </Tab>
+          </KeepAlive>
+          <KeepAlive>
+            <Tab slug="requirements" title="Вимоги" disabled>
+              <RequirementsPanel />
+            </Tab>
+          </KeepAlive>
+          <KeepAlive>
+            <Tab slug="environment" title="Середовище">
+              <EnvironmentPanel />
+            </Tab>
+          </KeepAlive>
         </Tabs>
       </section>
 

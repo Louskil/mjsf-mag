@@ -50,10 +50,9 @@ onBeforeUnmount(() => {
     :aria-labelledby="`${idPrefix}-tab-${slug}`"
     tabindex="0"
   >
-    <KeepAlive>
-      <slot v-if="isActive && $slots.default" :is-active="isActive" />
-      <component v-else-if="isActive" :is="panel" v-bind="panelProps" />
-    </KeepAlive>
+
+    <slot v-if="$slots.default" :is-active="isActive" />
+    <component v-else :is="panel" v-bind="panelProps" />
   </section>
 </template>
 
