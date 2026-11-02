@@ -8,7 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 
-const { loginPending, error, login } = storeToRefs(auth)
+const { loginPending, error } = storeToRefs(auth)
 
 const username = ref('emilys')
 const password = ref('emilyspass')
@@ -21,7 +21,7 @@ async function handleSubmit(event) {
   localError.value = ''
 
   try {
-    await login(username.value, password.value)
+    await auth.login(username.value, password.value)
     const redirect = route.query.redirect
     if (typeof redirect === 'string') {
       const targetRoute = router.resolve(redirect)

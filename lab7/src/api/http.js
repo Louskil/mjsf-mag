@@ -28,6 +28,9 @@ async function request(path, options = {}) {
 
   if (token) {
     headers.Authorization = `Bearer ${token}`
+    console.log('[HTTP] Request to', path, 'with Authorization header')
+  } else {
+    console.warn('[HTTP] Request to', path, 'WITHOUT Authorization header!')
   }
 
   const url = path.startsWith('http') ? path : `${API_BASE}${path}`
@@ -46,6 +49,8 @@ async function request(path, options = {}) {
       credentials: 'omit',
     })
 
+    console.log('[HTTP] Response status:', response.status)
+
     if (!response.ok) {
       let message = `HTTP ${response.status}`
       try {
@@ -63,6 +68,7 @@ async function request(path, options = {}) {
     if (cause.name === 'AbortError' || combinedSignal.aborted) {
       throw cause
     }
+    console.error('[HTTP] Network error:', cause)
     throw new HttpError('Мережева помилка', 0)
   }
 }

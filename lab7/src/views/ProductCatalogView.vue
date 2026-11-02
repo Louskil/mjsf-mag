@@ -9,9 +9,11 @@ import ProductCatalog from '@/components/ProductCatalog.vue'
 import CatalogLoadMore from '@/components/CatalogLoadMore.vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs.js'
+import { useProductsStore } from '@/stores/products.js'
 
 const route = useRoute()
 const router = useRouter()
+const productsStore = useProductsStore()
 
 const query = ref(route.query.q ?? '')
 const debouncedQuery = useDebouncedValue(query, 400)
@@ -31,6 +33,11 @@ const hasMore = computed(
 )
 
 const breadcrumbs = useBreadcrumbs()
+
+// Merge server products with local confirmed changes for public display
+const displayProducts = computed(() =>
+  products.value.map((product) => productsStore.getDisplayProduct(product, product.id))
+)
 
 watch(
   query,
@@ -136,7 +143,7 @@ onMounted(() => {
         v-model="query"
         :is-loading="isLoading"
         :error="error"
-        :shown-count="products.length"
+        :shown-count="displayProducts.length"
         :total="total"
         @update:modelValue="updateQueryFromInput"
       />
@@ -151,7 +158,7 @@ onMounted(() => {
       </div>
 
       <ProductCatalog
-        :products="products"
+        :products="displayProducts"
         :is-loading="isLoading"
         :error="error"
         @retry="refetch"

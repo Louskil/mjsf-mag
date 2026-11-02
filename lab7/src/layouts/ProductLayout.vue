@@ -2,8 +2,10 @@
 import { computed, ref, watchEffect, toValue } from 'vue'
 import { useRoute, RouterLink, RouterView } from 'vue-router'
 import { useFetch } from '@/composables/useFetch.js'
+import { useProductsStore } from '@/stores/products.js'
 
 const route = useRoute()
+const productsStore = useProductsStore()
 
 const id = computed(() => route.params.id)
 
@@ -17,12 +19,18 @@ const productUrl = computed(() => {
 
 const { data: product, error: productError, isLoading: productLoading, abort, refetch } = useFetch(productUrl)
 
+// Merge server product with local confirmed changes for public display
+const displayProduct = computed(() => {
+  if (!product.value) return null
+  return productsStore.getDisplayProduct(product.value, product.value.id)
+})
+
 const productTitle = computed(() => {
   if (productLoading.value) {
     return `Товар №${id.value}`
   }
-  if (product.value) {
-    return product.value.title
+  if (displayProduct.value) {
+    return displayProduct.value.title
   }
   return 'Товар не знайдено'
 })
@@ -80,24 +88,24 @@ watchEffect(() => {
       <header class="product-layout__header">
         <img
           class="product-layout__image"
-          :src="product.thumbnail"
-          :alt="product.title"
+          :src="displayProduct.thumbnail"
+          :alt="displayProduct.title"
           width="420"
           height="320"
         />
         <div class="product-layout__header-meta">
           <div class="product-layout__meta-row">
-            <span class="product-layout__category">{{ product.category }}</span>
-            <span class="product-layout__rating">{{ product.rating.toFixed(1) }} / 5</span>
+            <span class="product-layout__category">{{ displayProduct.category }}</span>
+            <span class="product-layout__rating">{{ displayProduct.rating.toFixed(1) }} / 5</span>
           </div>
-          <h1 class="product-layout__title">{{ product.title }}</h1>
-          <p class="product-layout__description">{{ product.description }}</p>
+          <h1 class="product-layout__title">{{ displayProduct.title }}</h1>
+          <p class="product-layout__description">{{ displayProduct.description }}</p>
           <div class="product-layout__footer">
             <strong class="product-layout__price">
-              {{ new Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(product.price) }}
+              {{ new Intl.NumberFormat('uk-UA', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(displayProduct.price) }}
             </strong>
             <span class="product-layout__stock">
-              {{ product.stock > 0 ? `У наявності · ${product.stock}` : 'Немає в наявності' }}
+              {{ displayProduct.stock > 0 ? `У наявності · ${displayProduct.stock}` : 'Немає в наявності' }}
             </span>
           </div>
         </div>
@@ -120,7 +128,7 @@ watchEffect(() => {
       </nav>
 
       <RouterView v-slot="{ Component }">
-        <component :is="Component" :product="product" />
+        <component :is="Component" :product="displayProduct" />
       </RouterView>
     </div>
   </div>

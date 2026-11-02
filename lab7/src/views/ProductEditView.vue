@@ -14,7 +14,8 @@ const auth = useAuthStore()
 const products = useProductsStore()
 
 const { request } = storeToRefs(auth)
-const { savePending, hasConfirmed, getConfirmed, save: saveProduct, cancelSave } = storeToRefs(products)
+const { savePending } = storeToRefs(products)
+const { save: saveProduct, cancelSave } = products
 
 const id = computed(() => route.params.id)
 const isValidId = computed(() => /^\d+$/.test(String(id.value)))
@@ -99,18 +100,22 @@ function handleInput(field) {
 }
 
 async function handleSubmit(event) {
+  console.log('[ProductEditView] handleSubmit called')
   event.preventDefault()
 
   if (!validateAll()) {
+    console.log('[ProductEditView] Validation failed')
     focusFirstError()
     return
   }
 
   try {
+    console.log('[ProductEditView] Calling saveProduct')
     await saveProduct(id.value, draft.value)
     initialDraft.value = normalizeDraft(draft.value)
     submitError.value = ''
   } catch (cause) {
+    console.error('[ProductEditView] Save error:', cause)
     if (cause instanceof Error && cause.message === 'Сеанс закінчився') {
       submitError.value = 'Сеанс закінчився під час збереження'
     } else if (cause && typeof cause === 'object' && 'errors' in cause) {
@@ -182,7 +187,7 @@ onBeforeRouteUpdate(async (to, from, next) => {
 
 watch(productData, (product) => {
   if (product && !initialDraft.value) {
-    const confirmed = hasConfirmed.value(id.value) ? getConfirmed.value(id.value) : null
+    const confirmed = products.hasConfirmed(id.value) ? products.getConfirmed(id.value) : null
     const base = confirmed ?? product
     draft.value = {
       title: base.title ?? '',

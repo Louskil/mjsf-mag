@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { http, HttpError } from '@/api/http.js'
 import { normalizeDraft, validateDraft } from '@/api/productDraft.js'
+import { useAuthStore } from './auth.js'
 
 export const useProductsStore = defineStore('products', () => {
   const confirmedChanges = ref({})
@@ -43,7 +44,14 @@ export const useProductsStore = defineStore('products', () => {
     }
 
     const normalized = normalizeDraft(draft)
-    const currentToken = http.getAuthToken?.()
+    const auth = useAuthStore()
+    const currentToken = auth.accessToken
+
+    console.log('[ProductsStore] Saving product', id, 'with token:', currentToken ? 'present' : 'MISSING')
+
+    if (!currentToken) {
+      throw new Error('No access token available')
+    }
 
     savePending.value[id] = true
     const controller = new AbortController()
@@ -52,9 +60,12 @@ export const useProductsStore = defineStore('products', () => {
     try {
       const result = await http.patch(`/auth/products/${id}`, normalized, {
         signal: controller.signal,
+        token: currentToken,
       })
 
-      if (currentToken !== http.getAuthToken?.()) {
+      console.log('[ProductsStore] Save successful:', result)
+
+      if (currentToken !== auth.accessToken) {
         throw new Error('Сеанс змінено під час запиту')
       }
 
@@ -66,6 +77,7 @@ export const useProductsStore = defineStore('products', () => {
       }
       return result
     } catch (cause) {
+      console.error('[ProductsStore] Save error:', cause)
       if (cause instanceof HttpError && cause.status === 401) {
         throw new Error('Сеанс закінчився')
       }
