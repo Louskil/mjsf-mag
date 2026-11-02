@@ -59,6 +59,9 @@ onMounted(() => {
           Вийти
         </button>
       </div>
+      <div class="app__auth" v-else>
+        <RouterLink :to="{ name: 'login' }" class="app__login">Увійти</RouterLink>
+      </div>
     </header>
 
     <main class="app__main">
